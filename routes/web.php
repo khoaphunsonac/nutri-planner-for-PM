@@ -187,7 +187,6 @@ Route::prefix('meals')->as('meal.')->group(function () use ($mealController) {
 
     Route::post('/favorite/{id}', [$mealController, 'favorite'])->middleware('user')->name('favorite');
     Route::get('/favorites', [$mealController, 'showsavemeals'])->middleware('user')->name('showsavemeals');
-
 });
 
 // Home
