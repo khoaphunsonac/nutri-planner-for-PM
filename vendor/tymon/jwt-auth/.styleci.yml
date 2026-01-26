@@ -1,5 +1,0 @@
-preset: laravel
-
-enabled:
-  - no_useless_else
-  - unalign_double_arrow
