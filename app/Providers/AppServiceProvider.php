@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
-
+use Illuminate\Support\Facades\URL;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -20,6 +20,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // 2. THÊM ĐOẠN CODE NÀY VÀO TRONG HÀM BOOT
+        if($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
         Paginator::defaultView('admin.partials.pagination');
     }
 }
