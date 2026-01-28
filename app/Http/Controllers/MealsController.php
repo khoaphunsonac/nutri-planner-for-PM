@@ -233,7 +233,7 @@ class MealsController extends BaseController
         ? MealModel::whereIn('id', $savedMealIds)->get() 
         : [];
         // Đếm số lượng thực tế (theo meal còn tồn tại)
-        $favoriteCount = $meals->count();
+        $favoriteCount = $meals->count() ?? null;
         return view($this->pathViewController.'showsavemeals',[
             'meals'=>$meals,
             'favoriteCount' => $favoriteCount,
