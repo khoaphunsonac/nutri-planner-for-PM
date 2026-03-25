@@ -20,10 +20,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // 2. THÊM ĐOẠN CODE NÀY VÀO TRONG HÀM BOOT
-        if($this->app->environment('production')) {
+        // Ép chạy HTTPS khi trên Vercel (môi trường production)
+        if (env('APP_ENV') === 'production') {
             URL::forceScheme('https');
         }
-        Paginator::defaultView('admin.partials.pagination');
     }
 }
