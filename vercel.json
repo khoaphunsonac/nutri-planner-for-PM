@@ -5,7 +5,7 @@
   },
   "routes": [
     {
-      "src": "/(build|assets|css|js|images|storage)/(.*)",
+      "src": "/(build|assets|css|js|images|storage|uploads)/(.*)",
       "dest": "/public/$1/$2"
     },
     {
