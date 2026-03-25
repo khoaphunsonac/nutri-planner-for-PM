@@ -5,8 +5,8 @@
   },
   "routes": [
     {
-      "src": "/build/(.*)",
-      "dest": "/public/build/$1"
+      "src": "/(build|assets|css|js|images|storage)/(.*)",
+      "dest": "/public/$1/$2"
     },
     {
       "src": "/favicon.ico",
