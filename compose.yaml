@@ -1,10 +1,37 @@
 services:
+    # Database Service
+    db:
+        image: postgres:15-alpine
+        container_name: postgres_nutriplanner
+        restart: unless-stopped
+        environment:
+            POSTGRES_USER: ${DB_USERNAME:-neondb_owner}
+            POSTGRES_PASSWORD: ${DB_PASSWORD:-npg_UPf2WLwuk0Dd}
+            POSTGRES_DB: ${DB_DATABASE:-neondb}
+            LANG: en_US.utf8
+        ports:
+            - '${DB_PORT:-5436}:5432'
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+            - ./init-db:/docker-entrypoint-initdb.d
+        networks:
+            - nutriplanner
+        healthcheck:
+            test: ['CMD-SHELL', 'pg_isready -U ${DB_USERNAME:-neondb_owner}']
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+    # Application Service
     app:
         build:
             context: .
             dockerfile: Dockerfile
         container_name: nutriplanner-app
         restart: unless-stopped
+        depends_on:
+            db:
+                condition: service_healthy
         ports:
             - '${APP_PORT:-8080}:80'
         environment:
@@ -13,28 +40,34 @@ services:
             APP_KEY: '${APP_KEY:-}'
             APP_DEBUG: '${APP_DEBUG:-true}'
             APP_URL: '${APP_URL:-http://localhost:8080}'
-            DB_CONNECTION: '${DB_CONNECTION:-pgsql}'
-            DATABASE_URL: '${DATABASE_URL:-}'
-            DATABASE_URL_UNPOOLED: '${DATABASE_URL_UNPOOLED:-}'
-            DB_HOST: '${DB_HOST:-}'
-            DB_PORT: '${DB_PORT:-5432}'
-            DB_DATABASE: '${DB_DATABASE:-neondb}'
-            DB_USERNAME: '${DB_USERNAME:-neondb_owner}'
-            DB_PASSWORD: '${DB_PASSWORD:-}'
-            DB_SSLMODE: '${DB_SSLMODE:-require}'
+            
+            # Database Configuration
+            DB_CONNECTION: pgsql
+            DB_HOST: db
+            DB_PORT: 5432
+            DB_DATABASE: ${DB_DATABASE:-neondb}
+            DB_USERNAME: ${DB_USERNAME:-neondb_owner}
+            DB_PASSWORD: ${DB_PASSWORD:-npg_UPf2WLwuk0Dd}
+            DB_SSLMODE: disable
+            
+            # Application Services
             LOG_CHANNEL: stack
             CACHE_DRIVER: file
             SESSION_DRIVER: file
             QUEUE_CONNECTION: sync
-            MAIL_MAILER: '${MAIL_MAILER:-smtp}'
-            MAIL_HOST: '${MAIL_HOST:-smtp.gmail.com}'
-            MAIL_PORT: '${MAIL_PORT:-587}'
-            MAIL_USERNAME: '${MAIL_USERNAME:-}'
-            MAIL_PASSWORD: '${MAIL_PASSWORD:-}'
-            MAIL_ENCRYPTION: '${MAIL_ENCRYPTION:-tls}'
-            MAIL_FROM_ADDRESS: '${MAIL_FROM_ADDRESS:-}'
-            MAIL_FROM_NAME: '${APP_NAME:-NutriPlanner}'
-            JWT_SECRET: '${JWT_SECRET:-}'
+            
+            # Mail Configuration
+            MAIL_MAILER: ${MAIL_MAILER:-smtp}
+            MAIL_HOST: ${MAIL_HOST:-smtp.gmail.com}
+            MAIL_PORT: ${MAIL_PORT:-587}
+            MAIL_USERNAME: ${MAIL_USERNAME:-}
+            MAIL_PASSWORD: ${MAIL_PASSWORD:-}
+            MAIL_ENCRYPTION: ${MAIL_ENCRYPTION:-tls}
+            MAIL_FROM_ADDRESS: ${MAIL_FROM_ADDRESS:-}
+            MAIL_FROM_NAME: ${APP_NAME:-NutriPlanner}
+            
+            # JWT Configuration
+            JWT_SECRET: ${JWT_SECRET:-}
         volumes:
             - app-storage:/var/www/html/storage/app/public
         networks:
@@ -46,4 +79,6 @@ networks:
 
 volumes:
     app-storage:
+        driver: local
+    postgres_data:
         driver: local
