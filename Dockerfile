@@ -64,6 +64,9 @@ COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN sed -i 's/\r$//' /usr/local/bin/entrypoint.sh \
     && chmod +x /usr/local/bin/entrypoint.sh
 
+# Copy init database scripts (PostgreSQL sẽ chạy 1 lần khi volume data trống)
+COPY init-db /docker-entrypoint-initdb.d
+
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
