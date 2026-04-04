@@ -216,7 +216,10 @@
             </div>
             @php
                 // Tách các bước từ chuỗi trong DB
-                $steps = preg_split('/\n|\d+\./', $meal->preparation, -1, PREG_SPLIT_NO_EMPTY);
+                $normalizedPreparation = str_replace(["\\r\\n", "\\n", "\\r"], "\n", $meal->preparation ?? '');
+                $normalizedPreparation = preg_replace("/\r\n|\r/", "\n", $normalizedPreparation);
+                $steps = preg_split('/(?:^|\n)\s*(?:B\s*\d+|\d+)[\.\:\-\)]?\s*|\n+/u', $normalizedPreparation, -1, PREG_SPLIT_NO_EMPTY);
+                $steps = array_values(array_filter(array_map('trim', $steps)));
                 $stepCount = count($steps);
                 $half = ceil($stepCount / 2);
             @endphp
