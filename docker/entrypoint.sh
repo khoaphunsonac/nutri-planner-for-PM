@@ -2,23 +2,23 @@
 set -e
 
 echo "=========================================="
-echo " NutriPlanner — Starting up..."
+echo " NutriPlanner - Starting up..."
 echo "=========================================="
 
-# Wait for MySQL to be ready
-echo "[*] Waiting for MySQL at ${DB_HOST}:${DB_PORT:-3306}..."
+# Wait for PostgreSQL to be ready
+echo "[*] Waiting for PostgreSQL at ${DB_HOST}:${DB_PORT:-5432}..."
 MAX_RETRIES=30
 RETRY=0
-until mysqladmin ping -h "${DB_HOST}" -P "${DB_PORT:-3306}" --silent 2>/dev/null; do
+until PGPASSWORD="${DB_PASSWORD}" pg_isready -h "${DB_HOST}" -p "${DB_PORT:-5432}" -U "${DB_USERNAME}" -d "${DB_DATABASE}" >/dev/null 2>&1; do
     RETRY=$((RETRY + 1))
     if [ $RETRY -ge $MAX_RETRIES ]; then
-        echo "[!] MySQL not available after ${MAX_RETRIES} retries. Exiting."
+        echo "[!] PostgreSQL not available after ${MAX_RETRIES} retries. Exiting."
         exit 1
     fi
-    echo "[*] MySQL not ready yet (attempt ${RETRY}/${MAX_RETRIES})... waiting 2s"
+    echo "[*] PostgreSQL not ready yet (attempt ${RETRY}/${MAX_RETRIES})... waiting 2s"
     sleep 2
 done
-echo "[✓] MySQL is ready!"
+echo "[OK] PostgreSQL is ready!"
 
 # Generate app key if not set
 if [ -z "$APP_KEY" ] || [ "$APP_KEY" = "" ]; then
@@ -51,7 +51,7 @@ php artisan storage:link 2>/dev/null || true
 chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
 echo "=========================================="
-echo " NutriPlanner — Ready! Starting services."
+echo " NutriPlanner - Ready! Starting services."
 echo "=========================================="
 
 exec "$@"

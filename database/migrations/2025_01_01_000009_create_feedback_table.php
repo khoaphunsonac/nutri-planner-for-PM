@@ -26,8 +26,7 @@ return new class extends Migration
                   ->onUpdate('restrict');
         });
 
-        // Add CHECK constraint for rating
-        DB::statement('ALTER TABLE `feedback` ADD CONSTRAINT `feedback_chk_1` CHECK (`rating` >= 1 AND `rating` <= 5)');
+        DB::statement('ALTER TABLE feedback ADD CONSTRAINT feedback_chk_1 CHECK (rating >= 1 AND rating <= 5)');
     }
 
     public function down(): void

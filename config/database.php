@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'pgsql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -75,7 +75,7 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'search_path' => 'public',
-            'sslmode' => 'prefer',
+            'sslmode' => env('DB_SSLMODE', 'require'),
         ],
 
         'sqlsrv' => [
@@ -123,9 +123,7 @@ return [
 
         'client' => env('REDIS_CLIENT', 'phpredis'),
 
-        'options' => extension_loaded('pdo_mysql') ? array_filter([
-            \Pdo\Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-        ]) : [],
+        'options' => [],
 
         'default' => [
             'url' => env('REDIS_URL'),
