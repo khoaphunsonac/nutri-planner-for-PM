@@ -127,8 +127,8 @@
 </div>
 
 {{-- Pagination --}}
-<div class="mt-3">
-    {{ $feedbacks->links() }}
+<div class="d-flex justify-content-center mt-3">
+    {{ $feedbacks->withQueryString()->links('pagination::bootstrap-5') }}
 </div>
 
 {{-- Script: ngăn click vào nút bị redirect dòng --}}

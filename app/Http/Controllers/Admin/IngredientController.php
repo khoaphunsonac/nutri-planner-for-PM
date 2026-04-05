@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\IngredientRequest;
 use App\Models\IngredientModel;
+use App\Support\AppliesKeywordOrIdSearch;
 use Illuminate\Http\Request;
 
 class IngredientController extends Controller
@@ -37,8 +38,7 @@ class IngredientController extends Controller
         $query = IngredientModel::query();
 
         if ($search) {
-            $query->where('name', 'like', "%{$search}%")
-                ->orWhere('id', $search);
+            AppliesKeywordOrIdSearch::apply($query, 'name', $search);
         }
 
         // Get paginated results

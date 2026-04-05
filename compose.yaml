@@ -68,7 +68,28 @@ services:
             # JWT Configuration
             JWT_SECRET: ${JWT_SECRET:-}
         volumes:
+            - ./:/var/www/html
             - app-storage:/var/www/html/storage/app/public
+        networks:
+            - nutriplanner
+
+    # Frontend dev service (Vite) - serves assets with HMR
+    node:
+        image: node:20
+        container_name: nutriplanner-node
+        working_dir: /var/www/html
+        restart: unless-stopped
+        depends_on:
+            - app
+        ports:
+            - '5173:5173'
+        environment:
+            # Enable polling for file watchers inside Docker on Windows
+            CHOKIDAR_USEPOLLING: 'true'
+        volumes:
+            - ./:/var/www/html
+            - /var/www/html/node_modules
+        command: sh -c "npm ci && npm run dev -- --host 0.0.0.0"
         networks:
             - nutriplanner
 

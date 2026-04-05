@@ -11,6 +11,7 @@ use App\Models\TagModel;
 use App\Models\AllergenModel;
 use App\Models\IngredientModel;
 use App\Models\RecipeIngredientModel;
+use App\Support\AppliesKeywordOrIdSearch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -26,8 +27,7 @@ class MealController extends Controller
         $query = MealModel::with(['dietType', 'mealType', 'tags', 'recipeIngredients.ingredient']);
 
         if ($search) {
-            $query->where('name', 'like', "%{$search}%")
-                ->orWhere('id', $search);
+            AppliesKeywordOrIdSearch::apply($query, 'name', $search);
         }
 
         // Get paginated results
