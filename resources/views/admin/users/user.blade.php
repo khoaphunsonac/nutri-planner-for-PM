@@ -196,8 +196,8 @@
     </div>
 
     {{-- Phân trang --}}
-    <div class="m-3">
-        {{ $accounts->links() }}
+    <div class="d-flex justify-content-center mt-3">
+        {{ $accounts->withQueryString()->links('pagination::bootstrap-5') }}
     </div>
 </div>
 

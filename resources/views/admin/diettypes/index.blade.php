@@ -39,7 +39,7 @@
     <form action="" method="GET" class="row g-2 align-items-center mb-4">
         <div class="col-md-8">
             <input type="text" name="search" class="form-control" placeholder="Tìm kiếm chế độ ăn..."
-                   value="{{ request('search') }}">
+                value="{{ request('search') }}">
         </div>
         <div class="col-md-4">
             <button class="btn btn-primary w-100" type="submit">
@@ -76,35 +76,37 @@
                     </thead>
                     <tbody>
                         @forelse ($dietTypes as $index => $diet)
-                            <tr onclick="window.location='{{ route('diettypes.show',$diet->id) }}'" style="cursor: pointer;">
+                            <tr onclick="window.location='{{ route('diettypes.show', $diet->id) }}'"
+                                style="cursor: pointer;">
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $diet->name }}</td>
-                               <td class="text-center">
-                        @if ($diet->meals->isNotEmpty())
-                        @foreach ($diet->meals->take(3) as $meal)
-            <span class="badge bg-success me-1">{{ $meal->name }}</span>
-        @endforeach
+                                <td class="text-center">
+                                    @if ($diet->meals->isNotEmpty())
+                                        @foreach ($diet->meals->take(3) as $meal)
+                                            <span class="badge bg-success me-1">{{ $meal->name }}</span>
+                                        @endforeach
 
-        @if ($diet->meals->count() > 3)
-            <span class="badge bg-success">…</span>
-        @endif
-    @else
-        <span class="text-muted">Chưa có</span>
-    @endif
-</td>
+                                        @if ($diet->meals->count() > 3)
+                                            <span class="badge bg-success">…</span>
+                                        @endif
+                                    @else
+                                        <span class="text-muted">Chưa có</span>
+                                    @endif
+                                </td>
                                 <td>{{ $diet->meals->count() }}</td>
                                 <td>{{ $diet->created_at?->format('d/m/Y H:i') }}</td>
                                 <td class="text-center" onclick="event.stopPropagation()">
                                     <div class="btn-group" role="group">
-                                        <a href="{{ route('diettypes.show', $diet->id) }}" class="btn btn-sm btn-info me-2" onclick="event.stopPropagation()">
+                                        <a href="{{ route('diettypes.show', $diet->id) }}" class="btn btn-sm btn-info me-2"
+                                            onclick="event.stopPropagation()">
                                             <i class="bi bi-eye"></i>
                                         </a>
-                                        <a href="{{ route('diettypes.edit', $diet->id) }}" class="btn btn-sm btn-warning me-2">
+                                        <a href="{{ route('diettypes.edit', $diet->id) }}"
+                                            class="btn btn-sm btn-warning me-2">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
-                                        <a href="{{ route('diettypes.destroy', $diet->id) }}"
-                                           class="btn btn-sm btn-danger"
-                                           onclick="event.stopPropagation(); return confirm('Bạn có chắc chắn muốn xóa?')">
+                                        <a href="{{ route('diettypes.destroy', $diet->id) }}" class="btn btn-sm btn-danger"
+                                            onclick="event.stopPropagation(); return confirm('Bạn có chắc chắn muốn xóa?')">
                                             <i class="bi bi-trash"></i>
                                         </a>
                                     </div>

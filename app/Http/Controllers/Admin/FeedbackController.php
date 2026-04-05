@@ -44,7 +44,7 @@ class FeedbackController extends Controller
         // $feedbacks = FeedbackModel::all();
         $feedbacks = $query->orderBy('created_at', 'desc')->paginate(10);
         // return $feedbacks;
-        return view('Admin.feedbacks.index', [
+        return view('admin.feedbacks.index', [
             'feedbacks' => $feedbacks,
             'search' => $request->search,
             'status' => $request->status,
@@ -55,7 +55,7 @@ class FeedbackController extends Controller
     public function show($id)
     {
         $feedback = FeedbackModel::with('account')->findOrFail($id);
-        return view('Admin.feedbacks.show', [
+        return view('admin.feedbacks.show', [
             'feedback' => $feedback,
         ]);
     }

@@ -170,18 +170,9 @@
             </div>
 
             {{-- Pagination --}}
-            @if ($meals->hasPages())
-                <div class="card-footer bg-light py-2">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <small class="text-muted">
-                            {{ $meals->firstItem() }}-{{ $meals->lastItem() }} / {{ $meals->total() }}
-                        </small>
-                        <div class="pagination-sm">
-                            {{ $meals->links() }}
-                        </div>
-                    </div>
-                </div>
-            @endif
+            <div class="d-flex justify-content-center mt-3">
+                {{ $meals->links('pagination::bootstrap-5') }}
+            </div>
         </div>
     </div>
 
