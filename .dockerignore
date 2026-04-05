@@ -14,3 +14,4 @@ phpunit.xml
 README.md
 JWT_README.md
 .editorconfig
+public/storage

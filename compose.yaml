@@ -41,13 +41,11 @@ services:
             APP_URL: '${APP_URL:-http://localhost:8080}'
             
             # Database Configuration
-            DB_CONNECTION: pgsql
-            DB_HOST: db
+            DB_HOST: dpg-d791789r0fns73e7kbd0-a.singapore-postgres.render.com
+            DB_DATABASE: nutriplanner_hxol
+            DB_USERNAME: user
+            DB_PASSWORD: KgrLv6gK0ZRMlxrzzcFPQhrfjD5VBfVh
             DB_PORT: 5432
-            DB_DATABASE: ${DB_DATABASE:-neondb}
-            DB_USERNAME: ${DB_USERNAME:-neondb_owner}
-            DB_PASSWORD: ${DB_PASSWORD:-npg_UPf2WLwuk0Dd}
-            DB_SSLMODE: disable
             
             # Application Services
             LOG_CHANNEL: stack
