@@ -14,7 +14,7 @@ class HomeController extends BaseController
 
     public $viewPath = 'site.home.';
     public function index(){
-        dd(DB::connection()->getDatabaseName());
+        // dd(DB::connection()->getDatabaseName());
         $latestMeals = MealModel::with(['tags',
                                 'mealType',
                                 'ingredients',
